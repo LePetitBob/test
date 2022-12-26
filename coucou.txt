@@ -1,1 +1,87 @@
-coucou ?
+import React, { useState, useRef } from 'react';
+import {useEffect} from 'react';
+import logo from './logo.svg';
+import './App.css';
+
+function ListElem(props)
+{
+	return (
+		<li>
+			{props}
+		</li>
+	);
+}
+
+function List(props){
+	return (
+		<ul>
+			{props.list.map(ListElem)}
+		</ul>
+	);
+}
+
+function Button(props) {
+	return (
+		<button onClick={props.onClick}>
+			{props.youssouf}
+		</button>
+	);
+}
+
+function App() {
+	
+		const My_list = ["coucou", "coucou2"];
+		const [list, setList] = useState(My_list);
+		// const [input, setInput] = useState("");
+		const input = useRef();
+
+		// const ma_fonction = () => {
+		// 	const new_list = list.concat("plop");
+		// 	setList(new_list);
+		// }
+		var ma_fonction = e => {
+			e.preventDefault();
+			setList([...list, input.current.value]);
+		  };
+
+	useEffect(() => {
+		const keyDownHandler = event => {
+			
+			if (event.key === 'Enter') {
+				event.preventDefault();
+				console.log('User pressed: ', event.key);
+
+			// 👇️ your logic here
+			ma_fonction();
+			}
+		};
+
+		document.addEventListener('keydown', keyDownHandler);
+
+		return () => {
+			document.removeEventListener('keydown', keyDownHandler);
+		};
+		}, []);
+
+
+return (
+	<div className="App">
+		<h1>To do list :</h1>
+		<header className="App-header">
+			{/* <Button youssouf="add task" onClick={ma_fonction}/> */}
+			<form onSubmit={ma_fonction}>
+				<label>
+					Add new task : 
+					<input type="text" name="name"/>
+					<input type="submit" value="Submit" />
+					{/* <input type="submit" value="Submit" onClick={ma_fonction}/> */}
+
+				</label>
+			</form>
+			<List list = {list}/>
+		</header>
+	</div>
+);
+}
+
+export default App;
